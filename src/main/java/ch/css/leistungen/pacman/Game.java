@@ -13,10 +13,17 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static ch.css.leistungen.pacman.PacMan.RADIUS;
+
 public class Game extends javafx.application.Application {
     private Scene scene;
-    private Timeline timeline;
-
+    private final int gamefieldX = 0;
+    private final int gamefieldY = 0;
+    private final int gamefieldWidth = 350;
+    private final int gamefieldHeight = 350;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -24,14 +31,19 @@ public class Game extends javafx.application.Application {
 
         final Canvas canvas = new Canvas(350,350);
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.BLUE);
+        gc.setFill(Color.DARKCYAN);
         gc.fillRect(0,0,350,350);
 
         final PacMan pacMan = new PacMan(200, 200);
+        final ScorePoint scorepoint = new ScorePoint(250, 250);
+        final ScorePoint scorepoint2 = new ScorePoint(210, 210);
 
-        final GameAnimationTimer gameAnimationTimer = new GameAnimationTimer(pacMan, gc);
+        scorepoint.deactivate();
+
+        List<GameElement> gameElementListe = Arrays.asList(pacMan,scorepoint, scorepoint2);
+
+        final GameAnimationTimer gameAnimationTimer = new GameAnimationTimer(gameElementListe, gc);
         gameAnimationTimer.start();
-
 
         scene = new Scene(root, 350, 350);
         root.getChildren().addAll(canvas);
@@ -39,12 +51,53 @@ public class Game extends javafx.application.Application {
         primaryStage.setTitle("Pac-Man");
         primaryStage.show();
 
-
         initKeyBindings(pacMan);
 
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                handlePacman(pacMan);
 
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 
+    private void handlePacman(PacMan pacMan) {
+        double xWert = pacMan.xWert();
+        int yWert = pacMan.yWert();
+
+        double leftBound = gamefieldX + RADIUS;
+        double rightBound = gamefieldX + gamefieldWidth - 3 * RADIUS;
+        double topBound = gamefieldY + RADIUS;
+        double bottomBound = gamefieldY + gamefieldHeight - 3 * RADIUS;
+
+        switch (pacMan.getLastDirection()) {
+            case STOP -> {
+            }
+            case RIGHT -> {
+                if (xWert <= rightBound) {
+                    pacMan.moveOneStep();
+                }
+            }
+            case LEFT -> {
+                if (xWert >= leftBound) {
+                    pacMan.moveOneStep();
+                }
+            }
+            case UP -> {
+                if (yWert >= topBound) {
+                    pacMan.moveOneStep();
+                }
+            }
+            case DOWN -> {
+                if (yWert <= bottomBound) {
+                    pacMan.moveOneStep();
+                }
+            }
+        }
+    }
 
     private void initKeyBindings(PacMan pacman) {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {

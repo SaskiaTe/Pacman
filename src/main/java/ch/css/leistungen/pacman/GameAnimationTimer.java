@@ -4,12 +4,13 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class GameAnimationTimer extends AnimationTimer {
-    private final PacMan pacMan;
-    private final GraphicsContext gc;
+import java.util.List;
 
-    public GameAnimationTimer(PacMan pacMan, GraphicsContext gc) {
-        this.pacMan = pacMan;
+public class GameAnimationTimer extends AnimationTimer {
+    private final GraphicsContext gc;
+    private final List<GameElement> gameElementListe;
+    public GameAnimationTimer(List<GameElement> gameElementListe, GraphicsContext gc) {
+        this.gameElementListe = gameElementListe;
         this.gc = gc;
     }
 
@@ -18,6 +19,8 @@ public class GameAnimationTimer extends AnimationTimer {
         gc.clearRect(0, 0, 350, 350);
         gc.setFill(Color.BLUE);
         gc.fillRect(0,0,350,350);
-        pacMan.draw(gc);
+        for (GameElement gameElement: gameElementListe) {
+            gameElement.draw(gc);
+        }
     }
 }

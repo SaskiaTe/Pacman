@@ -58,22 +58,22 @@ public class GameOld extends javafx.application.Application {
             @Override
             public void handle(KeyEvent keyEvent) {
                 switch (keyEvent.getCode()) {
-                    case LEFT:
+                    case LEFT -> {
                         deltaX = -10;
                         deltaY = 0;
-                        break;
-                    case RIGHT:
+                    }
+                    case RIGHT -> {
                         deltaX = 10;
                         deltaY = 0;
-                        break;
-                    case UP:
+                    }
+                    case UP -> {
                         deltaX = 0;
                         deltaY = -10;
-                        break;
-                    case DOWN:
+                    }
+                    case DOWN -> {
                         deltaX = 0;
                         deltaY = 10;
-                        break;
+                    }
                 }
             }
         });

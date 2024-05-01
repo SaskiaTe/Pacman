@@ -3,9 +3,11 @@ package ch.css.leistungen.pacman;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class PacMan {
+public class PacMan implements GameElement {
     private int xWert;
     private int yWert;
+
+    public static final double RADIUS = 12.5;
     private Direction lastDirection = Direction.STOP;
 
     public PacMan(int xWert, int yWert) {
@@ -14,9 +16,10 @@ public class PacMan {
     }
 
 
+    @Override
     public void draw(GraphicsContext gc) {
         gc.setFill(Color.YELLOW);
-        gc.fillOval(xWert, yWert, 25, 25);
+        gc.fillOval(xWert, yWert, RADIUS*2 , RADIUS*2);
     }
 
     public void whichDirection(Direction direction){
@@ -38,5 +41,9 @@ public class PacMan {
 
     public int yWert() {
         return yWert;
+    }
+
+    public Direction getLastDirection() {
+        return lastDirection;
     }
 }
