@@ -7,7 +7,6 @@ public class PacMan implements GameElement {
     private int xWert;
     private int yWert;
 
-    public static final double RADIUS = 12.5;
     private Direction lastDirection = Direction.STOP;
 
     public PacMan(int xWert, int yWert) {
@@ -19,19 +18,19 @@ public class PacMan implements GameElement {
     @Override
     public void draw(GraphicsContext gc) {
         gc.setFill(Color.YELLOW);
-        gc.fillOval(xWert, yWert, RADIUS*2 , RADIUS*2);
+        gc.fillOval(xWert, yWert, Game.GAMEFIELD_SIZE , Game.GAMEFIELD_SIZE);
     }
 
     public void whichDirection(Direction direction){
         lastDirection = direction;
     }
 
-    public void moveOneStep() {
+    public void moveOneStep(int stepSize) {
         switch (lastDirection) {
-            case LEFT -> xWert -= 10;
-            case RIGHT -> xWert += 10;
-            case UP -> yWert -= 10;
-            case DOWN -> yWert += 10;
+            case LEFT -> xWert -= stepSize;
+            case RIGHT -> xWert += stepSize;
+            case UP -> yWert -= stepSize;
+            case DOWN -> yWert += stepSize;
         }
     }
 
@@ -46,4 +45,6 @@ public class PacMan implements GameElement {
     public Direction getLastDirection() {
         return lastDirection;
     }
+
+
 }

@@ -13,39 +13,37 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static ch.css.leistungen.pacman.PacMan.RADIUS;
 
 public class Game extends javafx.application.Application {
     private Scene scene;
-    private final int gamefieldX = 0;
-    private final int gamefieldY = 0;
-    private final int gamefieldWidth = 350;
-    private final int gamefieldHeight = 350;
+    private final int gameX = 0;
+    private final int gameY = 0;
+    private static final int GAME_SIZE = 340;
+    public static final int GAMEFIELD_SIZE = 20;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         Group root = new Group();
 
-        final Canvas canvas = new Canvas(350,350);
+        final Canvas canvas = new Canvas(GAME_SIZE,GAME_SIZE);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.DARKCYAN);
-        gc.fillRect(0,0,350,350);
+        gc.fillRect(0,0, GAME_SIZE,GAME_SIZE);
 
-        final PacMan pacMan = new PacMan(200, 200);
-        final ScorePoint scorepoint = new ScorePoint(250, 250);
-        final ScorePoint scorepoint2 = new ScorePoint(210, 210);
+        final PacMan pacMan = new PacMan(0, 0);
+        final List<ScorePoint> scorePoints = createScorepoints();
 
-        scorepoint.deactivate();
-
-        List<GameElement> gameElementListe = Arrays.asList(pacMan,scorepoint, scorepoint2);
+        final List<GameElement> gameElementListe = new ArrayList<>(scorePoints);
+        gameElementListe.add(pacMan);
 
         final GameAnimationTimer gameAnimationTimer = new GameAnimationTimer(gameElementListe, gc);
         gameAnimationTimer.start();
 
-        scene = new Scene(root, 350, 350);
+        scene = new Scene(root, GAME_SIZE, GAME_SIZE);
         root.getChildren().addAll(canvas);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Pac-Man");
@@ -57,47 +55,74 @@ public class Game extends javafx.application.Application {
             @Override
             public void handle(ActionEvent event) {
                 handlePacman(pacMan);
-
+                for (ScorePoint scorePoint : scorePoints) {
+                    if (isPacmanOnScorepoint(pacMan, scorePoint)){
+                        scorePoint.deactivate();
+                    }
+                }
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
 
+    private List<ScorePoint> createScorepoints() {
+        final ScorePoint scorepoint = new ScorePoint(GAMEFIELD_SIZE*2, GAMEFIELD_SIZE*2);
+        final ScorePoint scorepoint2 = new ScorePoint(GAMEFIELD_SIZE, GAMEFIELD_SIZE);
+        final List<ScorePoint> scorepoints = new ArrayList<>();
+        scorepoints.add(scorepoint);
+        scorepoints.add(scorepoint2);
+
+        return scorepoints;
+    }
+
     private void handlePacman(PacMan pacMan) {
         double xWert = pacMan.xWert();
         int yWert = pacMan.yWert();
 
-        double leftBound = gamefieldX + RADIUS;
-        double rightBound = gamefieldX + gamefieldWidth - 3 * RADIUS;
-        double topBound = gamefieldY + RADIUS;
-        double bottomBound = gamefieldY + gamefieldHeight - 3 * RADIUS;
+        double leftBound = GAMEFIELD_SIZE/2;
+        double rightBound = GAME_SIZE - 2 * GAMEFIELD_SIZE;
+        double topBound = GAMEFIELD_SIZE/2;
+        double bottomBound = GAME_SIZE - 2 * GAMEFIELD_SIZE;
 
         switch (pacMan.getLastDirection()) {
             case STOP -> {
             }
             case RIGHT -> {
                 if (xWert <= rightBound) {
-                    pacMan.moveOneStep();
+                    pacMan.moveOneStep(GAMEFIELD_SIZE);
                 }
             }
             case LEFT -> {
                 if (xWert >= leftBound) {
-                    pacMan.moveOneStep();
+                    pacMan.moveOneStep(GAMEFIELD_SIZE);
                 }
             }
             case UP -> {
                 if (yWert >= topBound) {
-                    pacMan.moveOneStep();
+                    pacMan.moveOneStep(GAMEFIELD_SIZE);
                 }
             }
             case DOWN -> {
                 if (yWert <= bottomBound) {
-                    pacMan.moveOneStep();
+                    pacMan.moveOneStep(GAMEFIELD_SIZE);
                 }
             }
         }
     }
+
+    public boolean isPacmanOnScorepoint(PacMan pacman, ScorePoint scorePoint){
+        final int scorePointX = scorePoint.getXWert();
+        final int scorePointY = scorePoint.getYWert();
+        final int pacmanX = pacman.xWert();
+        final int pacmanY = pacman.yWert();
+        if (scorePointX == pacmanX && scorePointY == pacmanY ){
+            return true;
+        }
+        return false;
+    }
+
+
 
     private void initKeyBindings(PacMan pacman) {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {

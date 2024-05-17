@@ -22,6 +22,16 @@ public class ScorePoint implements GameElement {
         }
     }
 
+    public int getXWert(){
+        int xwert = xWert;
+        return xwert;
+    }
+
+    public int getYWert(){
+        int ywert = yWert;
+        return ywert;
+    }
+
     public void deactivate(){
         active = false;
     }
