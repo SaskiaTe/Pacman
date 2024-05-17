@@ -25,6 +25,10 @@ public class Game extends javafx.application.Application {
     private static final int GAME_SIZE = 340;
     public static final int GAMEFIELD_SIZE = 20;
 
+    private int score = 0;
+
+
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Group root = new Group();
@@ -56,8 +60,12 @@ public class Game extends javafx.application.Application {
             public void handle(ActionEvent event) {
                 handlePacman(pacMan);
                 for (ScorePoint scorePoint : scorePoints) {
-                    if (isPacmanOnScorepoint(pacMan, scorePoint)){
+                    if (isPacmanOnScorepoint(pacMan, scorePoint)) {
                         scorePoint.deactivate();
+                        if (!scorePoint.isPointGiven()) {
+                            score = score + 10;
+                            System.out.println(score);
+                        }
                     }
                 }
             }
@@ -67,12 +75,14 @@ public class Game extends javafx.application.Application {
     }
 
     private List<ScorePoint> createScorepoints() {
-        final ScorePoint scorepoint = new ScorePoint(GAMEFIELD_SIZE*2, GAMEFIELD_SIZE*2);
-        final ScorePoint scorepoint2 = new ScorePoint(GAMEFIELD_SIZE, GAMEFIELD_SIZE);
         final List<ScorePoint> scorepoints = new ArrayList<>();
-        scorepoints.add(scorepoint);
-        scorepoints.add(scorepoint2);
 
+        for (int i = 0; i <= GAME_SIZE; i = i+20){
+            for (int j = 0; j <= GAME_SIZE; j = j+20){
+                final ScorePoint scorepoint = new ScorePoint(i, j);
+                scorepoints.add(scorepoint);
+            }
+        }
         return scorepoints;
     }
 

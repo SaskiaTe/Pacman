@@ -8,6 +8,7 @@ public class ScorePoint implements GameElement {
     private int xWert;
     private int yWert;
     private boolean active  = true;
+    private boolean given = false;
 
     public ScorePoint(int xWert, int yWert){
         this.xWert = xWert;
@@ -34,6 +35,14 @@ public class ScorePoint implements GameElement {
 
     public void deactivate(){
         active = false;
+    }
+
+    public boolean isPointGiven(){
+        if (!given){
+            given = true;
+            return false;
+        }
+        return true;
     }
 
 }
