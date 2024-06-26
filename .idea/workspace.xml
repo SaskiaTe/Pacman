@@ -4,9 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fcb49a5-dc53-4530-bb73-8796d5560b57" name="Changes" comment="Application startet, Spielfeld erscheint und man kann den Pacman bewegen. Das Spielfeld hat einen Rand, aus dem der Pacman nicht raus kann. &#10;Beide ScorePoints werden in einer create Method erstellt und sind für den PacMan gut erreichbar, man hat auch ein kleines Raster and jeweils 20*20 px. Das ist auch die Stepsize des Pacmans.">
+    <list default="true" id="5fcb49a5-dc53-4530-bb73-8796d5560b57" name="Changes" comment="Die Spielfiguren wurden durch Bilder ersetzt.&#10;Es gibt Früchte auf dem Spielfeld die 30 Punkte vergeben, sobald diese gegessen wurden.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/Food.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/Ghost.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/GhostColor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/MagicFruit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/Obstacle.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/moveAble.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Erdbeere.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Kirschen.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/PacmanGeschlossen.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/PacmanOffen Links.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/PacmanOffen Oben.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/PacmanOffen Rechts.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/PacmanOffen Unten.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/blauerGeist.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ghost.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/greenGeist.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/roterGeist.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/GameAnimationTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/GameAnimationTimer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/GameElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/drawAble.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/PacMan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/PacMan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/ScorePoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/ScorePoint.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,9 +41,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Record" />
-        <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -44,18 +64,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/saskiatellenbach/Development/pacman&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "/Users/saskiatellenbach/Development/pacman/src/main/resources",
+    "settings.editor.selected.configurable": "project.propVCSSupport.CommitDialog"
+  },
+  "keyToStringList": {
+    "GitStage.ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
+    ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="ch.css.leistungen.pacman" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+      <recent name="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman" />
     </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="ch.css.leistungen.pacman" />
@@ -130,7 +164,14 @@
       <option name="project" value="LOCAL" />
       <updated>1715928153875</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Application startet, Spielfeld erscheint und man kann den Pacman bewegen. Das Spielfeld hat einen Rand, aus dem der Pacman nicht raus kann. &#10;Beide ScorePoints werden in einer create Method erstellt und sind für den PacMan gut erreichbar, man hat auch ein kleines Raster and jeweils 20*20 px. Das ist auch die Stepsize des Pacmans.&#10;Der Pacman bekommt für jeden ScorePoint den er frisst 10 Punkte.">
+      <created>1715946963162</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1715946963162</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -155,10 +196,17 @@
     <MESSAGE value="Application startet, Spielfeld erscheint und man kann den Pacman bewegen." />
     <MESSAGE value="Application startet, Spielfeld erscheint und man kann den Pacman bewegen. Das Spielfeld hat einen Rand, aus dem der Pacman nicht raus kann. &#10;Ich habe 2 Scorepoints, einer wird angezeigt, der zweite wird nicht angezeigt." />
     <MESSAGE value="Application startet, Spielfeld erscheint und man kann den Pacman bewegen. Das Spielfeld hat einen Rand, aus dem der Pacman nicht raus kann. &#10;Beide ScorePoints werden in einer create Method erstellt und sind für den PacMan gut erreichbar, man hat auch ein kleines Raster and jeweils 20*20 px. Das ist auch die Stepsize des Pacmans." />
-    <option name="LAST_COMMIT_MESSAGE" value="Application startet, Spielfeld erscheint und man kann den Pacman bewegen. Das Spielfeld hat einen Rand, aus dem der Pacman nicht raus kann. &#10;Beide ScorePoints werden in einer create Method erstellt und sind für den PacMan gut erreichbar, man hat auch ein kleines Raster and jeweils 20*20 px. Das ist auch die Stepsize des Pacmans." />
+    <MESSAGE value="Application startet, Spielfeld erscheint und man kann den Pacman bewegen. Das Spielfeld hat einen Rand, aus dem der Pacman nicht raus kann. &#10;Beide ScorePoints werden in einer create Method erstellt und sind für den PacMan gut erreichbar, man hat auch ein kleines Raster and jeweils 20*20 px. Das ist auch die Stepsize des Pacmans.&#10;Der Pacman bekommt für jeden ScorePoint den er frisst 10 Punkte." />
+    <MESSAGE value="Die Spielfiguren wurden durch Bilder ersetzt.&#10;Es gibt Früchte auf dem Spielfeld die 30 Punkte vergeben, sobald diese gegessen wurden." />
+    <option name="LAST_COMMIT_MESSAGE" value="Die Spielfiguren wurden durch Bilder ersetzt.&#10;Es gibt Früchte auf dem Spielfeld die 30 Punkte vergeben, sobald diese gegessen wurden." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/pacman$Game.ic" NAME="Game Coverage Results" MODIFIED="1718785226314" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ch.css.leistungen.pacman.*</FILTER>
+    </SUITE>
   </component>
 </project>

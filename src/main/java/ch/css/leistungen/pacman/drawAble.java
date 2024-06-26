@@ -2,6 +2,7 @@ package ch.css.leistungen.pacman;
 
 import javafx.scene.canvas.GraphicsContext;
 
-public interface GameElement {
+public interface drawAble {
     void draw(GraphicsContext gc);
+
 }
