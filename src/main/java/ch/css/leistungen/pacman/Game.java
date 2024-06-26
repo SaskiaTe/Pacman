@@ -21,11 +21,15 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class Game extends javafx.application.Application {
     private static final int SPEED = 150;
+    private final PacMan pacMan = new PacMan(0, 0);
+    private final HashMap<Ghost, List<int[]>> pathByGhostMap = new HashMap<>();
     private Scene scene;
     public static final int GAME_SIZE = 340;
     public static final int GAMEFIELD_SIZE = 20;
@@ -70,9 +74,8 @@ public class Game extends javafx.application.Application {
         gameSide.getChildren().add(menu);
 
         final Ghost redGhost = new Ghost(320, 0, GhostColor.RED);
-        final Ghost blueGhost = new Ghost(140, 180,  GhostColor.BLUE);
-        final Ghost greenGhost = new Ghost(280, 300,  GhostColor.GREEN);
-        final PacMan pacMan = new PacMan(0, 0);
+        final Ghost blueGhost = new Ghost(140, 180, GhostColor.BLUE);
+        final Ghost greenGhost = new Ghost(280, 300, GhostColor.GREEN);
         final MagicFruit Cherry = new MagicFruit(320, 60, 20, 20, Food.CHERRY);
         final MagicFruit Strawberry = new MagicFruit(220, 320, 20, 20, Food.STRAWBERRY);
         List<String[]> mapList = createMapList(map);
@@ -89,6 +92,9 @@ public class Game extends javafx.application.Application {
         drawAbleListe.addAll(obstacles);
         drawAbleListe.addAll(magicFruits);
 
+        pathByGhostMap.put(redGhost, GhostPaths.RED_GHOST_PATH);
+        pathByGhostMap.put(blueGhost, GhostPaths.BLUE_GHOST_PATH);
+        pathByGhostMap.put(greenGhost, GhostPaths.GREEN_GHOST_PATH);
 
         final GameAnimationTimer gameAnimationTimer = new GameAnimationTimer(drawAbleListe, gc);
         gameAnimationTimer.start();
@@ -105,11 +111,13 @@ public class Game extends javafx.application.Application {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(SPEED), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                handlePacman(pacMan, blueGhost, redGhost, greenGhost);
+                handlePacman(pacMan);
                 lifeText.setText(String.valueOf(life));
-                handleBlueGhost(blueGhost);
-                handlePinkGhost(redGhost);
-                handleGreenGhost(greenGhost);
+                for (Map.Entry<Ghost, List<int[]>> entry : pathByGhostMap.entrySet()) {
+                    handleGhost(entry.getKey(), entry.getValue());
+                }
+
+
                 if (score == 1410) {
                     Platform.exit();
                 } else {
@@ -188,7 +196,7 @@ public class Game extends javafx.application.Application {
     }
 
 
-    private void handlePacman(PacMan pacMan, Ghost blueGhost, Ghost pinkGhost, Ghost greenGhost) {
+    private void handlePacman(PacMan pacMan) {
         double xWert = pacMan.xWert();
         int yWert = pacMan.yWert();
 
@@ -202,131 +210,58 @@ public class Game extends javafx.application.Application {
             }
             case RIGHT -> {
                 if (xWert <= rightBound) {
-                    if (isPacmanInGhost(pacMan, blueGhost) || isPacmanInGhost(pacMan, pinkGhost) || isPacmanInGhost(pacMan, greenGhost)) {
-                        if (life > 1) {
-                            life = life - 1;
-                        } else {
-                            Platform.exit();
-                        }
+                    if (isPacmanInfrontObstacle(pacMan, obstacles, Direction.RIGHT)) {
                         pacMan.whichDirection(Direction.STOP);
-                        pacMan.setPacman(0, 0);
-                        blueGhost.setGhost(140, 180);
-                        blueGhost.setPathIndex(0);
-                        pinkGhost.setGhost(320, 0);
-                        pinkGhost.setPathIndex(0);
-                        greenGhost.setGhost(280, 300);
-                        greenGhost.setPathIndex(0);
-                    } else {
-                        if (isPacmanInfrontObstacle(pacMan, obstacles, Direction.RIGHT)) {
-                            pacMan.whichDirection(Direction.STOP);
-                        } else
-                            pacMan.moveOneStep(GAMEFIELD_SIZE);
-                    }
+                    } else
+                        pacMan.moveOneStep(GAMEFIELD_SIZE);
                 }
             }
             case LEFT -> {
                 if (xWert >= leftBound) {
-                    if (isPacmanInGhost(pacMan, blueGhost) || isPacmanInGhost(pacMan, pinkGhost) || isPacmanInGhost(pacMan, greenGhost)) {
-                        if (life > 1) {
-                            life = life - 1;
-                        } else {
-                            Platform.exit();
-                        }
+                    if (isPacmanInfrontObstacle(pacMan, obstacles, Direction.LEFT)) {
                         pacMan.whichDirection(Direction.STOP);
-                        pacMan.setPacman(0, 0);
-                        blueGhost.setGhost(140, 180);
-                        blueGhost.setPathIndex(0);
-                        pinkGhost.setGhost(320, 0);
-                        pinkGhost.setPathIndex(0);
-                        greenGhost.setGhost(280, 300);
-                        greenGhost.setPathIndex(0);
                     } else {
-                        if (isPacmanInfrontObstacle(pacMan, obstacles, Direction.LEFT)) {
-                            pacMan.whichDirection(Direction.STOP);
-                        } else {
-                            pacMan.moveOneStep(GAMEFIELD_SIZE);
-                        }
+                        pacMan.moveOneStep(GAMEFIELD_SIZE);
                     }
-
-
                 }
             }
             case UP -> {
                 if (yWert >= topBound) {
-                    if (isPacmanInGhost(pacMan, blueGhost) || isPacmanInGhost(pacMan, pinkGhost) || isPacmanInGhost(pacMan, greenGhost)) {
-                        if (life > 1) {
-                            life = life - 1;
-                        } else {
-                            Platform.exit();
-                        }
+                    if (isPacmanInfrontObstacle(pacMan, obstacles, Direction.UP)) {
                         pacMan.whichDirection(Direction.STOP);
-                        pacMan.setPacman(0, 0);
-                        blueGhost.setGhost(140, 180);
-                        blueGhost.setPathIndex(0);
-                        pinkGhost.setGhost(320, 0);
-                        pinkGhost.setPathIndex(0);
-                        greenGhost.setGhost(280, 300);
-                        greenGhost.setPathIndex(0);
-
-                    } else {
-                        if (isPacmanInfrontObstacle(pacMan, obstacles, Direction.UP)) {
-                            pacMan.whichDirection(Direction.STOP);
-                        } else
-                            pacMan.moveOneStep(GAMEFIELD_SIZE);
-                    }
+                    } else
+                        pacMan.moveOneStep(GAMEFIELD_SIZE);
                 }
             }
             case DOWN -> {
                 if (yWert <= bottomBound) {
-                    if (isPacmanInGhost(pacMan, blueGhost) || isPacmanInGhost(pacMan, pinkGhost) || isPacmanInGhost(pacMan, greenGhost)) {
-                        if (life > 1) {
-                            life = life - 1;
-                        } else {
-                            Platform.exit();
-                        }
+                    if (isPacmanInfrontObstacle(pacMan, obstacles, Direction.DOWN)) {
                         pacMan.whichDirection(Direction.STOP);
-                        pacMan.setPacman(0, 0);
-                        blueGhost.setGhost(140, 180);
-                        blueGhost.setPathIndex(0);
-                        pinkGhost.setGhost(320, 0);
-                        pinkGhost.setPathIndex(0);
-                        greenGhost.setGhost(280, 300);
-                        greenGhost.setPathIndex(0);
-                    } else {
-                        if (isPacmanInfrontObstacle(pacMan, obstacles, Direction.DOWN)) {
-                            pacMan.whichDirection(Direction.STOP);
-                        } else
-                            pacMan.moveOneStep(GAMEFIELD_SIZE);
-                    }
+                    } else
+                        pacMan.moveOneStep(GAMEFIELD_SIZE);
                 }
             }
 
-            default-> {
+            default -> {
                 if (xWert <= rightBound) {
-                    if (isPacmanInGhost(pacMan, blueGhost) || isPacmanInGhost(pacMan, pinkGhost) || isPacmanInGhost(pacMan, greenGhost)) {
-                        if (life > 1) {
-                            life = life - 1;
-                        } else {
-                            Platform.exit();
-                        }
+                    if (isPacmanInfrontObstacle(pacMan, obstacles, pacMan.getLastDirection())) {
                         pacMan.whichDirection(Direction.STOP);
-                        pacMan.setPacman(0, 0);
-                        blueGhost.setGhost(140, 180);
-                        blueGhost.setPathIndex(0);
-                        pinkGhost.setGhost(320, 0);
-                        pinkGhost.setPathIndex(0);
-                        greenGhost.setGhost(280, 300);
-                        greenGhost.setPathIndex(0);
-                    } else {
-                        if (isPacmanInfrontObstacle(pacMan, obstacles, pacMan.getLastDirection())) {
-                            pacMan.whichDirection(Direction.STOP);
-                        } else
-                            pacMan.moveOneStep(GAMEFIELD_SIZE);
-                    }
+                    } else
+                        pacMan.moveOneStep(GAMEFIELD_SIZE);
                 }
             }
         }
+    }
 
+    private void handlePacmanLifeAndReset() {
+        if (life > 1) {
+            life = life - 1;
+        } else {
+            Platform.exit();
+        }
+        pacMan.whichDirection(Direction.STOP);
+        pacMan.setPacman(0, 0);
+        pathByGhostMap.keySet().forEach(Ghost::reset);
     }
 
     public boolean isPacmanOnScorepoint(PacMan pacMan, ScorePoint scorePoint) {
@@ -407,100 +342,23 @@ public class Game extends javafx.application.Application {
         });
     }
 
+    private void handleGhost(Ghost ghost, List<int[]> ghostPath) {
 
-    private final List<int[]> blueGhostPath = List.of(
-            new int[]{140, 180},
-            new int[]{140, 160},
-            new int[]{120, 160},
-            new int[]{100, 160},
-            new int[]{80, 160},
-            new int[]{80, 140},
-            new int[]{80, 120},
-            new int[]{80, 100},
-            new int[]{100, 100},
-            new int[]{120, 100},
-            new int[]{140, 100},
-            new int[]{140, 80},
-            new int[]{140, 60},
-            new int[]{160, 60},
-            new int[]{180, 60},
-            new int[]{180, 80},
-            new int[]{180, 100},
-            new int[]{180, 120},
-            new int[]{180, 140},
-            new int[]{180, 160},
-            new int[]{180, 180},
-            new int[]{200, 180},
-            new int[]{220, 180},
-            new int[]{240, 180},
-            new int[]{260, 180},
-            new int[]{280, 180},
-            new int[]{300, 180},
-            new int[]{320, 180},
-            new int[]{320, 160},
-            new int[]{320, 140},
-            new int[]{300, 140},
-            new int[]{280, 140},
-            new int[]{260, 140},
-            new int[]{260, 120},
-            new int[]{260, 100},
-            new int[]{260, 80},
-            new int[]{240, 80},
-            new int[]{220, 80},
-            new int[]{220, 60},
-            new int[]{200, 60},
-            new int[]{180, 60},
-            new int[]{180, 80},
-            new int[]{180, 100},
-            new int[]{180, 120},
-            new int[]{180, 140},
-            new int[]{180, 160},
-            new int[]{180, 180},
-            new int[]{160, 180},
-            new int[]{140, 180},
-            new int[]{140, 200},
-            new int[]{120, 200},
-            new int[]{100, 200},
-            new int[]{80, 200},
-            new int[]{60, 200},
-            new int[]{60, 220},
-            new int[]{40, 220},
-            new int[]{20, 220},
-            new int[]{0, 220},
-            new int[]{0,240},
-            new int[]{0, 260},
-            new int[]{0, 280},
-            new int[]{0, 300},
-            new int[]{20, 300},
-            new int[]{40, 300},
-            new int[]{60, 300},
-            new int[]{80, 300},
-            new int[]{80, 280},
-            new int[]{80, 260},
-            new int[]{80, 240},
-            new int[]{80, 220},
-            new int[]{80,200},
-            new int[]{100, 200},
-            new int[]{120, 200},
-            new int[]{140, 200}
-    );
-
-    private void handleBlueGhost(Ghost blueGhost) {
-        if (blueGhost.getPathIndex() >= blueGhostPath.size()) {
-            blueGhost.setPathIndex(0);
+        if (ghost.getPathIndex() >= ghostPath.size()) {
+            ghost.setPathIndex(0);
         }
-        int[] target = blueGhostPath.get(blueGhost.getPathIndex());
+        int[] target = ghostPath.get(ghost.getPathIndex());
         int targetX = target[0];
         int targetY = target[1];
 
-        double xWert = blueGhost.xWert();
-        double yWert = blueGhost.yWert();
+        double xWert = ghost.xWert();
+        double yWert = ghost.yWert();
 
-        Direction newDirection = blueGhost.getLastDirection();
+        Direction newDirection = ghost.getLastDirection();
 
         if (Math.abs(xWert - targetX) < GAMEFIELD_SIZE && Math.abs(yWert - targetY) < GAMEFIELD_SIZE) {
-            blueGhost.incrementPathIndex();
-            target = blueGhostPath.get(blueGhost.getPathIndex());
+            ghost.incrementPathIndex();
+            target = ghostPath.get(ghost.getPathIndex());
             targetX = target[0];
             targetY = target[1];
         }
@@ -515,210 +373,22 @@ public class Game extends javafx.application.Application {
             newDirection = Direction.UP;
         }
 
-        if (isGhostInfrontObstacle(blueGhost, obstacles, newDirection)) {
-            blueGhost.whichDirection(Direction.STOP);
+        if (isGhostInfrontObstacle(ghost, obstacles, newDirection)) {
+            ghost.whichDirection(Direction.STOP);
         } else {
-            blueGhost.whichDirection(newDirection);
+            ghost.whichDirection(newDirection);
+        }
+        if(arePacmanAndGhostOnSameField(ghost)){
+            handlePacmanLifeAndReset();
         }
 
-        blueGhost.moveOneStep(GAMEFIELD_SIZE);
+        ghost.moveOneStep(GAMEFIELD_SIZE);
+        if(arePacmanAndGhostOnSameField(ghost)){
+            handlePacmanLifeAndReset();
+        }
     }
 
 
-    private final List<int[]> pinkGhostPath = List.of(
-            new int[]{320, 0},
-            new int[]{320, 20},
-            new int[]{320, 40},
-            new int[]{320, 60},
-            new int[]{320, 80},
-            new int[]{300, 80},
-            new int[]{280, 80},
-            new int[]{260, 80},
-            new int[]{240, 80},
-            new int[]{220, 80},
-            new int[]{220, 60},
-            new int[]{220, 40},
-            new int[]{220, 20},
-            new int[]{220, 0},
-            new int[]{220, 20},
-            new int[]{220, 40},
-            new int[]{220, 60},
-            new int[]{200, 60},
-            new int[]{180, 60},
-            new int[]{160, 60},
-            new int[]{140, 60},
-            new int[]{140, 40},
-            new int[]{140, 20},
-            new int[]{140, 0},
-            new int[]{120, 0},
-            new int[]{100, 0},
-            new int[]{80, 0},
-            new int[]{60, 0},
-            new int[]{40, 0},
-            new int[]{40, 20},
-            new int[]{40, 40},
-            new int[]{40, 60},
-            new int[]{40, 80},
-            new int[]{40, 100},
-            new int[]{40, 120},
-            new int[]{40, 140},
-            new int[]{40, 160},
-            new int[]{20, 160},
-            new int[]{0, 140},
-            new int[]{0, 120},
-            new int[]{0, 100},
-            new int[]{0, 80},
-            new int[]{0, 60},
-            new int[]{0, 40},
-            new int[]{0, 20},
-            new int[]{0, 0},
-            new int[]{20, 0},
-            new int[]{40, 0},
-            new int[]{60, 0},
-            new int[]{80, 0},
-            new int[]{100, 0},
-            new int[]{120, 0},
-            new int[]{140, 0},
-            new int[]{160, 0},
-            new int[]{180, 0},
-            new int[]{200, 0},
-            new int[]{220, 0},
-            new int[]{240, 0},
-            new int[]{260, 0},
-            new int[]{280, 0},
-            new int[]{300, 0},
-            new int[]{320, 0}
-    );
-    private void handlePinkGhost(Ghost pinkGhost) {
-        if (pinkGhost.getPathIndex() >= pinkGhostPath.size()) {
-            pinkGhost.setPathIndex(0);
-        }
-        int[] target = pinkGhostPath.get(pinkGhost.getPathIndex());
-        int targetX = target[0];
-        int targetY = target[1];
-
-        double xWert = pinkGhost.xWert();
-        double yWert = pinkGhost.yWert();
-
-        Direction newDirection = pinkGhost.getLastDirection();
-
-        if (Math.abs(xWert - targetX) < GAMEFIELD_SIZE && Math.abs(yWert - targetY) < GAMEFIELD_SIZE) {
-            pinkGhost.incrementPathIndex();
-            target = pinkGhostPath.get(pinkGhost.getPathIndex());
-            targetX = target[0];
-            targetY = target[1];
-        }
-
-        if (xWert < targetX) {
-            newDirection = Direction.RIGHT;
-        } else if (xWert > targetX) {
-            newDirection = Direction.LEFT;
-        } else if (yWert < targetY) {
-            newDirection = Direction.DOWN;
-        } else if (yWert > targetY) {
-            newDirection = Direction.UP;
-        }
-
-        if (isGhostInfrontObstacle(pinkGhost, obstacles, newDirection)) {
-            pinkGhost.whichDirection(Direction.STOP);
-        } else {
-            pinkGhost.whichDirection(newDirection);
-        }
-
-        pinkGhost.moveOneStep(GAMEFIELD_SIZE);
-    }
-
-
-
-    private final List<int[]> greenGhostPath = List.of(
-            new int[]{280, 300},
-            new int[]{280, 280},
-            new int[]{280, 260},
-            new int[]{280, 240},
-            new int[]{280, 220},
-            new int[]{300, 220},
-            new int[]{320, 220},
-            new int[]{320, 200},
-            new int[]{320, 180},
-            new int[]{300, 180},
-            new int[]{280, 180},
-            new int[]{260, 180},
-            new int[]{240, 180},
-            new int[]{220, 180},
-            new int[]{200, 180},
-            new int[]{180, 180},
-            new int[]{160, 180},
-            new int[]{140, 180},
-            new int[]{140, 200},
-            new int[]{120, 200},
-            new int[]{100, 200},
-            new int[]{80, 200},
-            new int[]{80, 220},
-            new int[]{60, 220},
-            new int[]{40, 220},
-            new int[]{20, 220},
-            new int[]{0, 220},
-            new int[]{0, 240},
-            new int[]{0, 260},
-            new int[]{0, 280},
-            new int[]{0, 300},
-            new int[]{0, 320},
-            new int[]{0, 300},
-            new int[]{20, 300},
-            new int[]{40, 300},
-            new int[]{60, 300},
-            new int[]{80, 300},
-            new int[]{100, 300},
-            new int[]{120, 300},
-            new int[]{140, 300},
-            new int[]{140, 320},
-            new int[]{160, 320},
-            new int[]{180, 320},
-            new int[]{200, 320},
-            new int[]{220, 320},
-            new int[]{220, 300},
-            new int[]{240, 300},
-            new int[]{260, 300},
-            new int[]{280, 300}
-    );
-    private void handleGreenGhost(Ghost greenGhost) {
-        if (greenGhost.getPathIndex() >= greenGhostPath.size()) {
-            greenGhost.setPathIndex(0);
-        }
-        int[] target = greenGhostPath.get(greenGhost.getPathIndex());
-        int targetX = target[0];
-        int targetY = target[1];
-
-        double xWert = greenGhost.xWert();
-        double yWert = greenGhost.yWert();
-
-        Direction newDirection = greenGhost.getLastDirection();
-
-        if (Math.abs(xWert - targetX) < GAMEFIELD_SIZE && Math.abs(yWert - targetY) < GAMEFIELD_SIZE) {
-            greenGhost.incrementPathIndex();
-            target = greenGhostPath.get(greenGhost.getPathIndex());
-            targetX = target[0];
-            targetY = target[1];
-        }
-
-        if (xWert < targetX) {
-            newDirection = Direction.RIGHT;
-        } else if (xWert > targetX) {
-            newDirection = Direction.LEFT;
-        } else if (yWert < targetY) {
-            newDirection = Direction.DOWN;
-        } else if (yWert > targetY) {
-            newDirection = Direction.UP;
-        }
-
-        if (isGhostInfrontObstacle(greenGhost, obstacles, newDirection)) {
-            greenGhost.whichDirection(Direction.STOP);
-        } else {
-            greenGhost.whichDirection(newDirection);
-        }
-
-        greenGhost.moveOneStep(GAMEFIELD_SIZE);
-    }
 
     public boolean isGhostInfrontObstacle(Ghost ghost, List<Obstacle> obstacles, Direction direction) {
         boolean bool = false;
@@ -753,48 +423,8 @@ public class Game extends javafx.application.Application {
         return bool;
     }
 
-    public boolean isPacmanInGhost(PacMan pacman, Ghost ghost){
-        final int ghostX = ghost.xWert();
-        final int ghostY = ghost.yWert();
-        final int pacmanX = pacman.xWert();
-        final int pacmanY = pacman.yWert();
-        int futurePacmanY = pacmanY;
-        int futurePacmanX = pacmanX;
-        int futureGhostY = ghostY;
-        int futureGhostX = ghostX;
-
-        switch (pacman.getLastDirection()){
-            case UP -> futurePacmanY = pacmanY - 20;
-            case DOWN -> futurePacmanY = pacmanY + 20;
-            case LEFT -> futurePacmanX = pacmanX -  20;
-            case RIGHT -> futurePacmanX = pacmanX +  20;
-            case STOP -> {
-                futurePacmanX = pacmanX;
-                futurePacmanY = pacmanY;
-            }
-        }
-
-        switch (ghost.getLastDirection()){
-            case UP -> futureGhostY = ghostY - 20;
-            case DOWN -> futureGhostY = ghostY + 20;
-            case LEFT -> futureGhostX = ghostX -  20;
-            case RIGHT -> futureGhostX = ghostX +  20;
-            case STOP -> {
-                futureGhostX = ghostX;
-                futureGhostY = ghostY;
-            }
-        }
-
-        if (ghostX == pacmanX && ghostY == pacmanY ){
-            return true;
-        }else if (futurePacmanX == ghostX && futureGhostX == pacmanX && pacmanY == ghostY) {
-            return true;
-        }else if (futurePacmanY == ghostY && futureGhostY == pacmanY && pacmanX == ghostX) {
-            return true;
-        }else if (pacman.getLastDirection() == Direction.STOP && ((futureGhostY == pacmanY && pacmanX == futureGhostX) || (ghostY == pacmanY && pacmanX == ghostX) )) {
-            return true;
-        }
-        return false;
+    public boolean arePacmanAndGhostOnSameField(Ghost ghost) {
+        return ghost.xWert() == pacMan.xWert() && ghost.yWert() == pacMan.yWert();
     }
 
     public void run() {

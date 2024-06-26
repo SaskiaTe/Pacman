@@ -19,11 +19,15 @@ public class Ghost implements drawAble {
     public final Image redGhostImage = new Image(redGhost);
     public final InputStream greenGhost = getClass().getClassLoader().getResourceAsStream("greenGeist.png");
     public final Image greenGhostImage = new Image(greenGhost);
+    private final int startX;
+    private final int startY;
 
     public Ghost(int xWert, int yWert, GhostColor color) {
         this.xWert = xWert;
         this.yWert = yWert;
         this.color = color;
+        startX = xWert;
+        startY = yWert;
     }
 
 
@@ -61,9 +65,10 @@ public class Ghost implements drawAble {
         return lastDirection;
     }
 
-    public void setGhost(int newX, int newY){
-        xWert = newX;
-        yWert = newY;
+    public void reset(){
+        xWert = startX;
+        yWert = startY;
+        pathIndex = 0;
     }
 
     public int getPathIndex() {
