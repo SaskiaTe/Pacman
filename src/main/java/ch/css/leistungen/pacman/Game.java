@@ -27,7 +27,7 @@ import java.util.Map;
 
 
 public class Game extends javafx.application.Application {
-    private static final int SPEED = 150;
+    private static final int SPEED = 300;
     private final PacMan pacMan = new PacMan(0, 0);
     private final HashMap<Ghost, List<int[]>> pathByGhostMap = new HashMap<>();
     private Scene scene;
@@ -112,12 +112,11 @@ public class Game extends javafx.application.Application {
             @Override
             public void handle(ActionEvent event) {
                 handlePacman(pacMan);
-                lifeText.setText(String.valueOf(life));
                 for (Map.Entry<Ghost, List<int[]>> entry : pathByGhostMap.entrySet()) {
                     handleGhost(entry.getKey(), entry.getValue());
                 }
 
-
+                lifeText.setText(String.valueOf(life));
                 if (score == 1410) {
                     Platform.exit();
                 } else {
