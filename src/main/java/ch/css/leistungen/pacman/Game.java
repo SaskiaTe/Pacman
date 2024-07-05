@@ -27,7 +27,7 @@ import java.util.Map;
 
 
 public class Game extends javafx.application.Application {
-    private static final int SPEED = 200;
+    private int speed = 200;
     private final PacMan pacMan = new PacMan(0, 0);
     private final HashMap<Ghost, List<int[]>> pathByGhostMap = new HashMap<>();
     private Scene scene;
@@ -56,7 +56,7 @@ public class Game extends javafx.application.Application {
     private Image Erdbeere;
     private Image Kirschen;
     private Timeline timeline;
-
+    private Text levels;
     private Text tryAgain;
     int oldscore = 0;
     private static final String TRY_AGAIN_TEXT = "To start game again press SPACE";
@@ -71,6 +71,7 @@ public class Game extends javafx.application.Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         Text title = new Text("PacMan");
+        levels = new Text("Speed level: 0 - 3: 1 ");
         Text scoreText = new Text("Score: " + String.valueOf(score));
         tryAgain = new Text(START_GAME_TEXT);
         ImageView imgView = new ImageView();
@@ -113,12 +114,14 @@ public class Game extends javafx.application.Application {
         lifeBox.getChildren().addAll(erbeereImageView);
         lifeBox.getChildren().addAll(kirschenImageView);
 
-        VBox menu = new VBox(100);
+        VBox menu = new VBox(50);
         menu.getChildren().add(title);
         title.fontProperty().set(Font.font(40));
         menu.getChildren().add(scoreText);
-        scoreText.fontProperty().set(Font.font(30));
+        levels.fontProperty().set(Font.font(20));
         menu.getChildren().addAll(lifeBox);
+        scoreText.fontProperty().set(Font.font(30));
+        menu.getChildren().add(levels);
         menu.getChildren().add(tryAgain);
 
 
@@ -157,7 +160,7 @@ public class Game extends javafx.application.Application {
         gameAnimationTimer.start();
 
 
-        scene = new Scene(root, 600, 600);
+        scene = new Scene(root, 600, 400);
         root.getChildren().add(gameSide);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Pac-Man");
@@ -169,7 +172,7 @@ public class Game extends javafx.application.Application {
 
 
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(SPEED), new EventHandler<ActionEvent>() {
+        timeline = new Timeline(new KeyFrame(Duration.millis(speed), new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
@@ -428,6 +431,22 @@ public class Game extends javafx.application.Application {
                             timeline.play();
                         }
                         tryAgain.setText(" ");
+                    }
+                    case DIGIT0 -> {
+                        timeline.setRate(0.5);
+                        levels.setText("Speed level: 0 - 3: 0 ");
+                    }
+                    case DIGIT1 -> {
+                        timeline.setRate(1);
+                        levels.setText("Speed level: 0 - 3: 1 ");
+                    }
+                    case DIGIT2 -> {
+                        timeline.setRate(1.5);
+                        levels.setText("Speed level: 0 - 3: 2 ");
+                    }
+                    case DIGIT3 -> {
+                        timeline.setRate(2);
+                        levels.setText("Speed level: 0 - 3: 3 ");
                     }
                 }
             }

@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fcb49a5-dc53-4530-bb73-8796d5560b57" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/HerzLeer.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/HerzVoll.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/Ghost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/Ghost.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/GhostPaths.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/GhostPaths.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/MagicFruit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/MagicFruit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/ScorePoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/ScorePoint.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +171,14 @@
       <option name="project" value="LOCAL" />
       <updated>1719477611032</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Dem Pacman wird bei jeder Berèhrung mit einem Geist ein Leben abgezogen.">
+      <created>1720169300012</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1720169300013</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
