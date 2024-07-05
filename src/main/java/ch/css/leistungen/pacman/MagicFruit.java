@@ -43,10 +43,8 @@ public class MagicFruit implements drawAble{
     public int yWert() {
         return yWert;
     }
-
-    public void setMagicFruit(int newX, int newY){
-        xWert = newX;
-        yWert = newY;
+    public void reset(){
+        active = true;
     }
     public void deactivate(){
         active = false;
@@ -54,6 +52,10 @@ public class MagicFruit implements drawAble{
 
     public boolean isActive() {
         return active;
+    }
+
+    public Food getFoodType(){
+        return food;
     }
 }
 

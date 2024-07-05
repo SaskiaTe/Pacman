@@ -82,6 +82,7 @@ public class Ghost implements drawAble {
     public void setPathIndex(int pathIndex) {
         this.pathIndex = pathIndex;
     }
+
 }
 
 

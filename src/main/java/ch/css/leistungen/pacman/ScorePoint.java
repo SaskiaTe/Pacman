@@ -37,4 +37,8 @@ public class ScorePoint implements drawAble {
     public boolean isActive() {
         return active;
     }
+    public void reset(){
+        active = true;
+    }
 }
+

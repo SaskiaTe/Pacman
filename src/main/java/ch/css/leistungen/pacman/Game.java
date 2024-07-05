@@ -2,7 +2,6 @@ package ch.css.leistungen.pacman;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -11,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -27,7 +27,7 @@ import java.util.Map;
 
 
 public class Game extends javafx.application.Application {
-    private static final int SPEED = 300;
+    private static final int SPEED = 200;
     private final PacMan pacMan = new PacMan(0, 0);
     private final HashMap<Ghost, List<int[]>> pathByGhostMap = new HashMap<>();
     private Scene scene;
@@ -42,6 +42,26 @@ public class Game extends javafx.application.Application {
     private final List<MagicFruit> magicFruits = new ArrayList<>();
     private final List<Obstacle> obstacles = new ArrayList<>();
 
+    private final ImageView lebenImageView1 = new ImageView();
+    private final ImageView lebenImageView2 = new ImageView();
+    private final ImageView lebenImageView3 = new ImageView();
+    private final ImageView erbeereImageView = new ImageView();
+    private final ImageView kirschenImageView = new ImageView();
+    private Image Life1Leer;
+    private Image Life2Leer;
+    private Image Life3Leer;
+    private Image Life1;
+    private Image Life2;
+    private Image Life3;
+    private Image Erdbeere;
+    private Image Kirschen;
+    private Timeline timeline;
+
+    private Text tryAgain;
+    int oldscore = 0;
+    private static final String TRY_AGAIN_TEXT = "To start game again press SPACE";
+    private static final String START_GAME_TEXT = "To start game press SPACE";
+
     @Override
     public void start(Stage primaryStage) throws
             Exception {
@@ -51,23 +71,60 @@ public class Game extends javafx.application.Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         Text title = new Text("PacMan");
-        Text scoreText = new Text(String.valueOf(score));
-        Text lifeText = new Text(String.valueOf(life));
-
+        Text scoreText = new Text("Score: " + String.valueOf(score));
+        tryAgain = new Text(START_GAME_TEXT);
         ImageView imgView = new ImageView();
         Rectangle2D viewportRect = new Rectangle2D(170, 80, 120, 300);
         imgView.setViewport(viewportRect);
 
 
-        VBox menu = new VBox(60);
+
+
+        Life1 = new Image("HerzVoll.png");
+        Life1Leer = new Image("HerzLeer.png");
+        lebenImageView1.setImage(Life1Leer);
+        lebenImageView1.setImage(Life1);
+
+        Life2 = new Image("HerzVoll.png");
+        Life2Leer = new Image("HerzLeer.png");
+        lebenImageView2.setImage(Life2Leer);
+        lebenImageView2.setImage(Life2);
+
+        Life3 = new Image("HerzVoll.png");
+        Life3Leer = new Image("HerzLeer.png");
+        lebenImageView3.setImage(Life3Leer);
+        lebenImageView3.setImage(Life3);
+
+        lebenImageView1.setFitWidth(20);
+        lebenImageView1.setFitHeight(20);
+        lebenImageView2.setFitWidth(20);
+        lebenImageView2.setFitHeight(20);
+        lebenImageView3.setFitWidth(20);
+        lebenImageView3.setFitHeight(20);
+        erbeereImageView.setFitWidth(40);
+        erbeereImageView.setFitHeight(40);
+        kirschenImageView.setFitWidth(40);
+        kirschenImageView.setFitHeight(40);
+
+        HBox lifeBox = new HBox(20);
+        lifeBox.getChildren().addAll(lebenImageView1);
+        lifeBox.getChildren().addAll(lebenImageView2);
+        lifeBox.getChildren().addAll(lebenImageView3);
+        lifeBox.getChildren().addAll(erbeereImageView);
+        lifeBox.getChildren().addAll(kirschenImageView);
+
+        VBox menu = new VBox(100);
         menu.getChildren().add(title);
         title.fontProperty().set(Font.font(40));
         menu.getChildren().add(scoreText);
         scoreText.fontProperty().set(Font.font(30));
-        menu.getChildren().add(lifeText);
-        lifeText.fontProperty().set(Font.font(20));
+        menu.getChildren().addAll(lifeBox);
+        menu.getChildren().add(tryAgain);
+
+
         menu.alignmentProperty().set(Pos.CENTER);
         menu.getChildren().add(imgView);
+
 
         HBox gameSide = new HBox();
         gameSide.getChildren().addAll(canvas);
@@ -100,15 +157,20 @@ public class Game extends javafx.application.Application {
         gameAnimationTimer.start();
 
 
-        scene = new Scene(root, 600, GAME_SIZE);
+        scene = new Scene(root, 600, 600);
         root.getChildren().add(gameSide);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Pac-Man");
         primaryStage.show();
 
+
+
         initKeyBindings(pacMan);
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(SPEED), new EventHandler<ActionEvent>() {
+
+
+        timeline = new Timeline(new KeyFrame(Duration.millis(SPEED), new EventHandler<ActionEvent>() {
+
             @Override
             public void handle(ActionEvent event) {
                 handlePacman(pacMan);
@@ -116,17 +178,19 @@ public class Game extends javafx.application.Application {
                     handleGhost(entry.getKey(), entry.getValue());
                 }
 
-                lifeText.setText(String.valueOf(life));
-                if (score == 1410) {
-                    Platform.exit();
+                if (score == 1410 || score == oldscore + 1411) {
+                    reset();
+                    timeline.setDelay(Duration.millis(3000));
+                    oldscore = score;
+                    score++;
                 } else {
                     for (ScorePoint scorePoint : scorePoints) {
-                        if (isPacmanOnScorepoint(pacMan, scorePoint)) {
-                            if (scorePoint.isActive()) {
+                        if (scorePoint.isActive()) {
+                            if (isPacmanOnScorepoint(pacMan, scorePoint)) {
                                 scorePoint.deactivate();
                                 score = score + 10;
                                 System.out.println(score);
-                                scoreText.setText(String.valueOf(score));
+                                scoreText.setText("Score: " + score);
                             }
                         }
                     }
@@ -136,15 +200,25 @@ public class Game extends javafx.application.Application {
                                 magicFruit.deactivate();
                                 score = score + 30;
                                 System.out.println(score);
-                                scoreText.setText(String.valueOf(score));
+                                scoreText.setText("Score: " + score);
+                                switch (magicFruit.getFoodType()){
+                                    case STRAWBERRY -> {
+                                        Erdbeere = new Image("Erdbeere.png");
+                                        erbeereImageView.setImage(Erdbeere);
+                                    }
+                                    case CHERRY -> {
+                                        Kirschen = new Image("Kirschen.png");
+                                        kirschenImageView.setImage(Kirschen);
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-        }));
+        }, new javafx.animation.KeyValue[]{}));
         timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+
     }
 
 
@@ -255,8 +329,18 @@ public class Game extends javafx.application.Application {
     private void handlePacmanLifeAndReset() {
         if (life > 1) {
             life = life - 1;
+            switch (life) {
+                case 1:
+                    lebenImageView2.setImage(Life2Leer);
+                case 2:
+                    lebenImageView1.setImage(Life1Leer);
+            }
+
+
         } else {
-            Platform.exit();
+            lebenImageView3.setImage(Life3Leer);
+            timeline.stop();
+            tryAgain.setText(TRY_AGAIN_TEXT);
         }
         pacMan.whichDirection(Direction.STOP);
         pacMan.setPacman(0, 0);
@@ -336,16 +420,46 @@ public class Game extends javafx.application.Application {
                     case DOWN -> {
                         pacman.whichDirection(Direction.DOWN);
                     }
+                    case SPACE -> {
+                        if (life > 1){
+                            timeline.play();
+                        } else {
+                            resetGame();
+                            timeline.play();
+                        }
+                        tryAgain.setText(" ");
+                    }
                 }
             }
         });
     }
 
+    private void resetGame(){
+        reset();
+        life = 3;
+        lebenImageView3.setImage(Life3);
+        lebenImageView2.setImage(Life2);
+        lebenImageView1.setImage(Life1);
+        score = 0;
+    }
+
+    private void reset(){
+        for (MagicFruit magicFruit : magicFruits) {
+            magicFruit.reset();
+        }
+        for (ScorePoint scorePoint : scorePoints) {
+            scorePoint.reset();
+        }
+        kirschenImageView.setImage(null);
+        erbeereImageView.setImage(null);
+
+    }
     private void handleGhost(Ghost ghost, List<int[]> ghostPath) {
 
         if (ghost.getPathIndex() >= ghostPath.size()) {
             ghost.setPathIndex(0);
         }
+
         int[] target = ghostPath.get(ghost.getPathIndex());
         int targetX = target[0];
         int targetY = target[1];
@@ -357,6 +471,9 @@ public class Game extends javafx.application.Application {
 
         if (Math.abs(xWert - targetX) < GAMEFIELD_SIZE && Math.abs(yWert - targetY) < GAMEFIELD_SIZE) {
             ghost.incrementPathIndex();
+            if (ghost.getPathIndex() >= ghostPath.size()) {
+                ghost.setPathIndex(0);
+            }
             target = ghostPath.get(ghost.getPathIndex());
             targetX = target[0];
             targetY = target[1];
@@ -377,16 +494,15 @@ public class Game extends javafx.application.Application {
         } else {
             ghost.whichDirection(newDirection);
         }
-        if(arePacmanAndGhostOnSameField(ghost)){
+        if (arePacmanAndGhostOnSameField(ghost)) {
             handlePacmanLifeAndReset();
         }
 
         ghost.moveOneStep(GAMEFIELD_SIZE);
-        if(arePacmanAndGhostOnSameField(ghost)){
+        if (arePacmanAndGhostOnSameField(ghost)) {
             handlePacmanLifeAndReset();
         }
     }
-
 
 
     public boolean isGhostInfrontObstacle(Ghost ghost, List<Obstacle> obstacles, Direction direction) {

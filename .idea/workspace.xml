@@ -5,8 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fcb49a5-dc53-4530-bb73-8796d5560b57" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/HerzLeer.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/HerzVoll.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/Ghost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/Ghost.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/GhostPaths.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/GhostPaths.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/MagicFruit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/MagicFruit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/ScorePoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/css/leistungen/pacman/ScorePoint.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,22 +49,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "/Users/saskiatellenbach/Development/pacman/src/main/resources",
-    "settings.editor.selected.configurable": "project.propVCSSupport.CommitDialog"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/saskiatellenbach/Development/pacman/src/main/resources&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.CommitDialog&quot;
   },
-  "keyToStringList": {
-    "GitStage.ChangesTree.GroupingKeys": [
-      "directory",
-      "module",
-      "repository"
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="ch.css.leistungen.pacman" />
@@ -164,7 +170,14 @@
       <option name="project" value="LOCAL" />
       <updated>1719393747896</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Dem Pacman wird bei jeder Berèhrung mit einem Geist ein Leben abgezogen.">
+      <created>1719477611032</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1719477611032</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

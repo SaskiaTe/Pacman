@@ -78,8 +78,7 @@ public class GhostPaths {
             new int[]{80, 220},
             new int[]{80, 200},
             new int[]{100, 200},
-            new int[]{120, 200},
-            new int[]{140, 200}
+            new int[]{120, 200}
     );
 
 
@@ -144,8 +143,7 @@ public class GhostPaths {
             new int[]{240, 0},
             new int[]{260, 0},
             new int[]{280, 0},
-            new int[]{300, 0},
-            new int[]{320, 0}
+            new int[]{300, 0}
     );
 
     public static final List<int[]> GREEN_GHOST_PATH = List.of(
@@ -196,7 +194,6 @@ public class GhostPaths {
             new int[]{220, 320},
             new int[]{220, 300},
             new int[]{240, 300},
-            new int[]{260, 300},
-            new int[]{280, 300}
+            new int[]{260, 300}
     );
 }
